@@ -7,6 +7,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
+import UserContext from './Pages/Context/UserContext';
 // Create a client
 const queryClient = new QueryClient()
 
@@ -16,7 +17,9 @@ root.render(
 
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <App />
+      <UserContext>
+        <App />
+      </UserContext>
 
     </QueryClientProvider>
 
