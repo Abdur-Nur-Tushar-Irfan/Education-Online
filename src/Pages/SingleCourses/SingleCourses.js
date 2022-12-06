@@ -4,6 +4,7 @@ import React from 'react';
 
 const SingleCourses = ({ course, setSelectCategory }) => {
     const { name, details, img } = course
+    
 
     return (
         <div className="card w-96 bg-base-100 shadow-xl">

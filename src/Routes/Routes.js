@@ -4,6 +4,7 @@ import About from "../Pages/About/About";
 import AllCourse from "../Pages/AllCourses/AllCourse";
 import Home from "../Pages/Home/Home/Home";
 import Login from "../Pages/Login/Login";
+import PrivateRoute from "../Pages/PrivateRoute/PrivateRoute";
 import Register from "../Pages/Register/Register";
 
 

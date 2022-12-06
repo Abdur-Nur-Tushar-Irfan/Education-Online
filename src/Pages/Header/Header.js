@@ -1,8 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import toast from 'react-hot-toast';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../Context/UserContext';
 
 
 const Header = () => {
+    const { user, logOut } = useContext(AuthContext)
+    const navigate = useNavigate()
+
+    const handleSignOut = () => {
+        logOut()
+            .then(result => {
+                navigate('/login')
+                toast.success('Successfully logOut')
+            })
+            .catch(error => console.error(error))
+
+    }
     return (
         <div className="navbar bg-base-100">
             <div className="navbar-start">
@@ -13,8 +28,14 @@ const Header = () => {
                     <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                         <li><Link to='/home'>Home</Link></li>
                         <li><Link to='/about'>About</Link></li>
-                        <li><Link to='/login'>Login</Link></li>
-                        <li className='btn btn-secondary'><Link to='/register'>Register</Link></li>
+                        {
+                            user?.displayName ? <li ><button onClick={handleSignOut}>LogOut</button></li>
+                                :
+                                <li><Link to='/login'>Login</Link> <li >{user?.displayName}</li></li>
+                        }
+                        <li className=' btn-primary rounded-full'><Link to='/register'>Register</Link></li>
+                        <li >{user?.displayName}</li>
+
 
                     </ul>
                 </div>
@@ -24,8 +45,17 @@ const Header = () => {
                 <ul className="menu menu-horizontal p-0">
                     <li><Link to='/home'>Home</Link></li>
                     <li><Link to='/about'>About</Link></li>
-                    <li><Link to='/login'>Login</Link></li>
-                    <li className='btn btn-secondary'><Link to='/register'>Register</Link></li>
+                    
+                    {
+                        user?.displayName ? <li ><button onClick={handleSignOut}>LogOut</button></li>
+                            :
+                            <li><Link to='/login'>Login</Link> <li >{user?.displayName}</li></li>
+                    }
+
+
+                    <li className=' btn-primary rounded-full'><Link to='/register'>Register</Link></li>
+
+
 
                 </ul>
             </div>

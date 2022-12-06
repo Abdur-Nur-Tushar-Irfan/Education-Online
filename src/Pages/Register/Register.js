@@ -1,10 +1,105 @@
 import React from 'react';
+import { useContext } from 'react';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../Context/UserContext';
+
 
 const Register = () => {
+    const { register, formState: { errors }, handleSubmit } = useForm();
+    const { createUser,updateUserProfile } = useContext(AuthContext)
+    const navigate=useNavigate()
+    const location=useLocation()
+    const from=location.state?.from?.pathname || '/'   
+
+
+    const handleRegister = (data) => {
+        createUser(data.email, data.password)
+            .then(result => {
+                navigate('/')
+                handleUpdateUserProfile(data.firstName,data.lastName)
+                toast.success('Register Successfully')
+            })
+            .catch(error => {
+                console.error(error)
+            })
+
+    }
+    const handleUpdateUserProfile = (firstName,email) => {
+        const profile = {
+            displayName: firstName,
+            email
+        }
+        updateUserProfile(profile)
+            .then(() => {
+
+            })
+            .catch(error => {
+                console.error(error)
+
+            })
+
+    }
     return (
-        <div>
-            <h1>This is register page</h1>
-            
+        <div className="hero-content flex-col lg:flex-row">
+
+            <form onSubmit={handleSubmit(handleRegister)} className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+
+                <div className="card-body">
+                    <h1 className="text-3xl font-bold text-center">Register!</h1>
+                    <img className=' h-15 w-1/2 rounded-full mx-auto' alt='' />
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text">First Name</span>
+                        </label>
+                        <input type="text" {...register("firstName", { required: 'FirstName is required' })} placeholder="Your First Name" className="input input-bordered" />
+                        {errors.firstName?.type === 'required' && <p className='text-red-600 mt-2'>FirstName is required</p>}
+                    </div>
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text">Last Name</span>
+                        </label>
+                        <input type="text" {...register("lastName", { required: 'LastName is required' })} placeholder="Your Last Name" className="input input-bordered" />
+                        {errors.lastName?.type === 'required' && <p className='text-red-600 mt-2'>LastName is required</p>}
+                    </div>
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text">Your Number</span>
+                        </label>
+                        <input type="number" {...register("number", { required: 'Number is required' })} placeholder="Your Number" className="input input-bordered" />
+                        {errors.number?.type === 'required' && <p className='text-red-600 mt-2'>Number is required</p>}
+                    </div>
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text">Your Email</span>
+                        </label>
+                        <input type="email" {...register("email", { required: 'Email is required' })} placeholder="Email" className="input input-bordered" />
+                        {errors.email?.type === 'required' && <p className='text-red-600 mt-2'>Email is required</p>}
+                    </div>
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text">Password</span>
+                        </label>
+                        <input type="password" {...register("password",
+                            {
+                                required: 'Password is required',
+                                minLength: { value: 8, message: 'Password must be 8 character' }
+                            })}
+                            placeholder="password" className="input input-bordered" />
+
+
+                        {errors.password && <p className='text-red-600 mt-2'>{errors.password?.message}</p>}
+
+                        <label className="label">
+                            <p>Already Login? <Link to='/login' className='text-cyan-700 font-bold'>Log in</Link></p>
+                        </label>
+                    </div>
+                    <div className="form-control mt-6">
+                        <input className='btn-primary py-4 rounded-full w-full' value='Register' type="submit" />
+                    </div>
+                </div>
+            </form>
         </div>
     );
 };

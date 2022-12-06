@@ -9,8 +9,6 @@ import Reactpdf from '../ReactPdf/ReactPdf';
 const PurchaseModal = ({ selectCategory }) => {
     const { name, img, title, price, details } = selectCategory
 
-
-
     return (
         <div>
             <input type="checkbox" id="my-modal-3" className="modal-toggle" />
